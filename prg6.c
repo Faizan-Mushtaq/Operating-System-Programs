@@ -2,6 +2,7 @@
 #include<pthread.h>
 #include<semaphore.h>
 #include<stdlib.h>
+#include<unistd.h>
 int buffer[5],front,rear;
 sem_t mutex,full,empty;
 
