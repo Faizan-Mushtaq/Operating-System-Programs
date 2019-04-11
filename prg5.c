@@ -20,7 +20,7 @@ sem_t mutex,wrt;
     for(i=0;i<5;i++)
     {
         pthread_create(&readid[i],NULL,readtask,NULL);
-        if(i==3)
+        if(i==2)
         pthread_create(&writeid,NULL,writetask,NULL);
     }
     for(i=0;i<5;i++)
