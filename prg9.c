@@ -24,7 +24,7 @@ int main(int argc,char *argv[])
                 close(fd2);
                 printf("File copied\n");
                 break;
-        case 2:
+        case 2://second file should not be created before  
                 link(argv[1],argv[2]);
                 unlink(argv[1]);
                 printf("File 1 moved to 2\n");
