@@ -25,6 +25,13 @@ void allocate()
         }
         //printf("%d is the size required\n",u);
         size-=u;
+
+        if(size<0)
+        {
+        printf("memory cannot be allocated\n");
+        size+=u;
+        return;
+        }
         a[i++]=u;
         b[h++]=req;
         //printf("Remaining memory=%d\n",size);
