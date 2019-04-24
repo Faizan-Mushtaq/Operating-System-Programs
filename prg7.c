@@ -5,7 +5,7 @@
 void main(int argc,char*argv[])
 {
   int pro,res;
-  printf("Enter number of processes & resources\n" );
+  printf("Enter number of processes & resources\n");
   scanf("%d",&pro );
   scanf("%d",&res );
 
@@ -15,16 +15,16 @@ void main(int argc,char*argv[])
   {
     for(int j=0;j<res;j++)
     {
-      scanf("%d",&max[i][j] );
+      scanf("%d",&max[i][j]);
     }
   }
 
-  printf("Enter alloc matrix\n" );
+  printf("Enter alloc matrix\n");
   for(int i=0;i<pro;i++)
   {
     for(int j=0;j<res;j++)
     {
-      scanf("%d",&alloc[i][j] );
+      scanf("%d",&alloc[i][j]);
     }
   }
 
@@ -45,7 +45,7 @@ void main(int argc,char*argv[])
 
   //Request resource algo
   int p;
-  printf("Enter process number\n" );
+  printf("Enter process number which requests\n");
   scanf("%d",&p );
 
   printf("Enter request\n" );
@@ -54,7 +54,7 @@ void main(int argc,char*argv[])
   for(int i=0;i<res;i++)
     scanf("%d",&req[i]);
 
-  //if request < need && request <avail do the three
+  //if request <= need && request <= avail do the three
   int flag=0;
   printf("RESOURCE REQUEST\n" );
   for(int i=0;i<res;i++)
@@ -84,15 +84,17 @@ printf("New need matrix\n" );
     {
       //need[i][j]=max[i][j]-alloc[i][j];
       printf("%d ",need[i][j]);
-    }printf("\n" );
+    }printf("\n");
   }
 
   int work[res];
+  printf("work mat: ");
   for(int i=0;i<res;i++)
   {
     work[i]=avail[i];
     printf("%d ",work[i]);
-  }//copied
+}//copied
+printf("\n");
   int count=0;
   int finish[pro],k=0;
   for(int i=0;i<pro;i++)
@@ -123,7 +125,7 @@ printf("New need matrix\n" );
         work[j]+=alloc[i][j];
       }finish[i]=1;
       order[k++]=i;
-      printf("available\n" );
+      printf("available: " );
       for(int x=0;x<res;x++)
       printf("%d ",work[x] );
       printf("\n" );
@@ -144,9 +146,5 @@ printf("The order is\n" );
   {
     printf("%d\n",order[i] );
   }
-
-
-
-
 
 }
