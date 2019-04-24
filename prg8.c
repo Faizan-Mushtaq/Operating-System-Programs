@@ -15,8 +15,8 @@ void allocate()
     scanf("%d",&req);
     if(req<=max_size)
     {
-        int small;
-        int valid=0;
+        //int small;
+        //int valid=0;
         z=0;
         while((t=actual/pow(2,z))>=req)
         {
