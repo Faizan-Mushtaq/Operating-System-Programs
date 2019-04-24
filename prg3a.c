@@ -20,7 +20,7 @@ int main(int argc,char *argv[])
         int b=setpriority(PRIO_PROCESS,pid,i);
         if(b==0)
         c=getpriority(PRIO_PROCESS,pid);
-        printf("%d\t%d\t%d\n",a,i,c);
+        printf("%d\t%d\t%d\n",a,b,c);
     }
 
     printf("policy changing program\n");
