@@ -23,29 +23,31 @@ void allocate()
             u=t;
             z+=1;
         }
-        printf("%d is the size required\n",u);
+        //printf("%d is the size required\n",u);
         size-=u;
-        a[++i]=u;
-        b[++h]=req;
-        printf("Remaining memory=%d\n",size);
+        a[i++]=u;
+        b[h++]=req;
+        //printf("Remaining memory=%d\n",size);
+        while((size/pow(2,z))>=1)
+        z=z+1;
+
+        max_size=pow(2,z-1);
     }
     else
     {
         printf("Cannot allocate memory\n");
-        exit(0);
+        return;//exit(0);
     }
-    printf("Required \t\tAllocation\n");
-    for(int k=1;k<=i;k++)
-    printf("%d\t\t%d\n",b[k],a[k]);
+
 }
 void deallocate(int n)
 {
+    int flag=0,z=0;
     if(i==0)
     {
         printf("Memory not yet allocated \n");
         return;
     }
-    int flag=0;
     for (int j=0;j<=i;j++)
     {
         if(a[j]==n)
@@ -57,12 +59,18 @@ void deallocate(int n)
                 b[k]=b[k+1];
             }
             size+=n;
+            while((size/pow(2,z))>=1)
+            z=z+1;
+
+            max_size=pow(2,z-1);
             break;
         }
     }
-    printf("Remaining memory = %d\n",size);
-    if(flag==0)
+    //printf("Remaining memory = %d\n",size);
+    if(flag==0){
     printf("Not found in memory\n");
+    return;
+}
 }
 int main()
 {
@@ -70,7 +78,7 @@ int main()
     scanf("%d",&size);
     original_size=size;
     max_size=size;
-    int mem,ch;
+    int mem,ch,k;
     while(1)
     {
         printf("Enter 1.Allocate 2.Deallocate\n");
@@ -79,10 +87,19 @@ int main()
         {
             case 1:allocate();
                     break;
-            case 2:printf("Enter mem size to deallocate\n");
+            case 2: if(max_size==size)
+                    {printf("not allocated\n");
+                    break;}
+                    printf("Enter mem size to deallocate\n");
                     scanf("%d",&mem);
                     deallocate(mem);
                     break;
+        }
+        printf("Required \t\tAllocation\n");
+        for(int k=0;k<=i;k++)
+        {
+            if(a[k]!=0 && b[k]!=0)
+            printf("%d\t\t%d\n",b[k],a[k]);
         }
     }
     return 0;
