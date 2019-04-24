@@ -1,62 +1,49 @@
 #include<stdio.h>
-#include<sys/types.h>
-#include<unistd.h>
-#include<semaphore.h>
 #include<pthread.h>
-#include<stdlib.h>
-#include<fcntl.h>
-int readcount=0;
-int count=0;
-void *readtask();
-void *writetask();
-sem_t mutex,wrt;
- void main()
+#include<semaphore.h>
+sem_t mutex,writeblock;
+int data=0,rcount=0;
+void *reader(void *arg)
 {
-    int i=0;
-    pthread_t readid[10];
-    pthread_t writeid;
-    sem_init(&mutex,0,1);
-    sem_init(&wrt,0,1);
-    for(i=0;i<5;i++)
-    {
-        pthread_create(&readid[i],NULL,readtask,NULL);
-        if(i==2)
-        pthread_create(&writeid,NULL,writetask,NULL);
-    }
-    for(i=0;i<5;i++)
-    pthread_join(readid[i],NULL);
-
-    pthread_join(writeid,NULL);
-    sem_destroy(&mutex);
-    sem_destroy(&wrt);
-}
-void *readtask()
-{
-    int fd;
+    int f;
+    f=((int)arg);
     sem_wait(&mutex);
-    readcount++;
-    if(readcount==1)
-    sem_wait(&wrt);
-    char sent[100];
-    fd=open("f1.txt",0);
-    read(fd,sent,20);
-    printf("reader %d  is reading %s\n",count++,sent);
+    rcount=rcount+1;
+    if(rcount==1)
+    sem_wait(&writeblock);
     sem_post(&mutex);
-    readcount--;
-    //sleep(2);
-    if(readcount==0)
-    sem_post(&wrt);
+    printf("data read by reader %d is %d\n",f,data);
+    sleep(1);
+    sem_wait(&mutex);
+    rcount=rcount-1;
+    if(rcount==0)
+    sem_post(&writeblock);
     sem_post(&mutex);
 }
-void *writetask()
+void  *writer(void *arg)
 {
-    int fd;
-    char sent[100]="RVCE";
-    sem_wait(&wrt);
-    fd=open("f1.txt",1);
-    lseek(fd,SEEK_SET,10);
-    write(fd,sent,10);
-    printf("Writer is writing\n");
-    close(fd);
-    sem_post(&wrt);
+    int f;
+    f=((int)arg);
+    sem_wait(&writeblock);
+    data++;
+    printf("data written by writer %d is %d \n",f,data);
+    sleep(1);
+    sem_post(&writeblock);
+}
+main()
+{
+    int i,b;
+    pthread_t rtid[5],wtid[5];
+    sem_init(&mutex,0,1);
+    sem_init(&writeblock,0,1);
+    for(i=0;i<=2;i++)
+    {
+        pthread_create(&wtid[i],NULL,writer,(void*)i);
+        pthread_create(&rtid[i],NULL,reader,(void*)i);
+    }
+    for(i=0;i<=2;i++)
+    {
+        pthread_join(wtid[i],NULL);
+        pthread_join(rtid[i],NULL);
+    }
 }
