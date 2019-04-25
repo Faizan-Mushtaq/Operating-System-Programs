@@ -43,7 +43,7 @@ void *readtask()
     printf("reader %d  is reading %s\n",count++,sent);
     sem_post(&mutex);
     readcount--;
-    //sleep(2);
+    sleep(1);
     if(readcount==0)
     sem_post(&wrt);
     sem_post(&mutex);
